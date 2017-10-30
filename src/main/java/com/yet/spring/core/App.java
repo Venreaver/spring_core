@@ -2,10 +2,16 @@ package com.yet.spring.core;
 
 import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.ConsoleEventLogger;
+import com.yet.spring.core.beans.EventLogger;
 
 public class App {
     private Client client;
-    private ConsoleEventLogger eventLogger;
+    private EventLogger eventLogger;
+
+//    public App(Client client, EventLogger eventLogger) {
+//        this.client = client;
+//        this.eventLogger = eventLogger;
+//    }
 
     public void logEvent(String msg) {
         eventLogger.logEvent(msg.replaceAll(client.getId(), client.getFullName()));
