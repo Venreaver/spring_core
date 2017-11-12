@@ -3,11 +3,8 @@ package com.yet.spring.core;
 import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.loggers.EventLogger;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.Collections;
-import java.util.List;
 
 public class App {
     private Client client;
@@ -24,11 +21,13 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+//        ctx.registerShutdownHook();
         App app = (App) ctx.getBean("app");
         Event event = ctx.getBean(Event.class);
         app.logEvent(event, "Some event for user 1");
         event = (Event) ctx.getBean("event");
         app.logEvent(event, "Some event for user 2");
+        ctx.close();
     }
 }

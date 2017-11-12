@@ -1,6 +1,5 @@
-package com.yet.spring.core;
+package com.yet.spring.core.beans;
 
-import com.yet.spring.core.beans.Event;
 import org.junit.Test;
 
 import java.text.DateFormat;

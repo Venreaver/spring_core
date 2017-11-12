@@ -40,9 +40,11 @@ public class TestApp {
 
     private class DummyLogger implements EventLogger {
         private Event event;
+
         public void logEvent(Event event) {
             this.event = event;
         }
+
         public Event getEvent() {
             return event;
         }
