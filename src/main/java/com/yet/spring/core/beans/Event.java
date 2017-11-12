@@ -1,5 +1,7 @@
 package com.yet.spring.core.beans;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +18,11 @@ public class Event {
     private int id;
     private String msg;
 
-    @Resource(name = "newDate")
+    @Autowired
+    @Qualifier("newDate")
     private Date date;
 
-    @Resource(name = "dateFormat")
+    @Autowired
     private DateFormat df;
 
     public Event() {
