@@ -8,7 +8,6 @@
     <bean id="client" class="com.yet.spring.core.beans.Client">
         <constructor-arg value="1"/>
         <constructor-arg value="John Smith"/>
-        <property name="greetings" value="Hello there"/>
     </bean>
 
     <bean id="app" class="com.yet.spring.core.App">
