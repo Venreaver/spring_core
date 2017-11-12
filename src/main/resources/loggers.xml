@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="eventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger"/>
+    <bean id="consoleEventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger"/>
 
     <bean id="fileEventLogger" class="com.yet.spring.core.loggers.FileEventLogger" init-method="init">
         <constructor-arg value="target/events_log.txt"/>
@@ -13,6 +13,15 @@
     <bean id="cacheFileEventLogger" class="com.yet.spring.core.loggers.CacheFileEventLogger"
           parent="fileEventLogger" destroy-method="destroy">
         <constructor-arg index="1" value="4"/>
+    </bean>
+
+    <bean id="combineEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger">
+        <constructor-arg>
+            <list>
+                <ref bean="consoleEventLogger"/>
+                <ref bean="fileEventLogger"/>
+            </list>
+        </constructor-arg>
     </bean>
 
 </beans>

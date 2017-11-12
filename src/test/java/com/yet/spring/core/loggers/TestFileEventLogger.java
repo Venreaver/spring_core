@@ -1,7 +1,5 @@
 package com.yet.spring.core.loggers;
 
-//import org.apache.commons.io.FileUtils;
-
 import com.yet.spring.core.beans.Event;
 import org.junit.After;
 import org.junit.Assert;
@@ -29,13 +27,13 @@ public class TestFileEventLogger {
     }
 
     @Test
-    public void testInit() {
+    public void testInit() throws IOException {
         FileEventLogger logger = new FileEventLogger(file.getAbsolutePath());
         logger.init();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInitFail() {
+    public void testInitFail() throws IOException {
         file.setReadOnly();
         FileEventLogger logger = new FileEventLogger(file.getAbsolutePath());
         logger.init();

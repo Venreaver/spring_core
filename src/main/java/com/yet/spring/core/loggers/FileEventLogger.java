@@ -10,18 +10,14 @@ public class FileEventLogger implements EventLogger {
     private File file;
     private String filename;
 
-    public FileEventLogger(String filename) {
+    FileEventLogger(String filename) {
         this.filename = filename;
     }
 
-    void init() {
+    void init() throws IOException{
         this.file = new File(filename);
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Can't create a file with " + filename);
-            }
+            file.createNewFile();
         }
         if (!file.canWrite()) {
             throw new IllegalArgumentException("Can't write into " + filename);

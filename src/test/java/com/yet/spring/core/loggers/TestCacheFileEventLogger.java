@@ -1,7 +1,5 @@
 package com.yet.spring.core.loggers;
 
-//import org.apache.commons.io.FileUtils;
-
 import com.yet.spring.core.beans.Event;
 import org.junit.After;
 import org.junit.Assert;
