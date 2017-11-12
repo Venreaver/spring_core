@@ -3,7 +3,9 @@ package com.yet.spring.core.util;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.*;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AwareBean implements ApplicationContextAware, BeanNameAware, ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher eventPublisher;
