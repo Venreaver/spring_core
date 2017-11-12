@@ -11,9 +11,9 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestApp {
     private static final String MSG = "Hello";
@@ -31,6 +31,38 @@ public class TestApp {
         invokeLogEvent(app, EventType.INFO, event, MSG + " 0");
         assertTrue(dummyLogger.getEvent().getMsg().contains(MSG));
         assertFalse(dummyLogger.getEvent().getMsg().contains(client.getFullName()));
+    }
+
+    @Test
+    public void testCorrectLoggerCall() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Client client = new Client("25", "Bob");
+        DummyLogger defaultLogger = new DummyLogger();
+        DummyLogger infoLogger = new DummyLogger();
+
+        @SuppressWarnings("serial")
+        App app = new App(client, defaultLogger, new HashMap<EventType, EventLogger>() {{
+            put(EventType.INFO, infoLogger);
+        }});
+
+        Event event = new Event(new Date(), DateFormat.getDateTimeInstance());
+
+        invokeLogEvent(app, null, event, MSG + " " + client.getId());
+        assertNotNull(defaultLogger.getEvent());
+        assertNull(infoLogger.getEvent());
+
+        defaultLogger.setEvent(null);
+        infoLogger.setEvent(null);
+
+        invokeLogEvent(app, EventType.ERROR, event, MSG + " " + client.getId());
+        assertNotNull(defaultLogger.getEvent());
+        assertNull(infoLogger.getEvent());
+
+        defaultLogger.setEvent(null);
+        infoLogger.setEvent(null);
+
+        invokeLogEvent(app, EventType.INFO, event, MSG + " 0");
+        assertNull(defaultLogger.getEvent());
+        assertNotNull(infoLogger.getEvent());
     }
 
     private void invokeLogEvent(App app, EventType type, Event event, String message) throws NoSuchMethodException,

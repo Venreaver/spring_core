@@ -13,8 +13,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
         </plugins>
@@ -23,6 +24,7 @@
     <description>The project created throughout the course 'Spring Framework - The Basics'</description>
 
     <properties>
+        <java.version>1.8</java.version>
         <spring.version>4.3.10.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
     </properties>

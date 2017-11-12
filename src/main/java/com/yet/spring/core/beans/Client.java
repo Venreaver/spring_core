@@ -3,7 +3,7 @@ package com.yet.spring.core.beans;
 public class Client {
     private String id;
     private String fullName;
-    private String greetings;
+    private String greeting;
 
     public Client(String id, String fullName) {
         this.id = id;
@@ -26,11 +26,11 @@ public class Client {
         this.fullName = fullName;
     }
 
-    public String getGreetings() {
-        return greetings;
+    public String getGreeting() {
+        return greeting;
     }
 
-    public void setGreetings(String greetings) {
-        this.greetings = greetings;
+    public void setGreeting(String greeting) {
+        this.greeting = greeting;
     }
 }
