@@ -26,11 +26,18 @@ public class TestCacheFileEventLogger {
         file.delete();
     }
 
+    private CacheFileEventLogger createAndInitCacheFileEventLogger()
+            throws IOException {
+        CacheFileEventLogger logger = new CacheFileEventLogger(file.getAbsolutePath(), 2);
+        logger.init();
+        logger.initCache();
+        return logger;
+    }
+
     @Test
     public void testLogEvent() throws IOException {
         Event event = new Event(new Date(), DateFormat.getDateInstance());
-        CacheFileEventLogger logger = new CacheFileEventLogger(file.getAbsolutePath(), 2);
-        logger.init();
+        CacheFileEventLogger logger = createAndInitCacheFileEventLogger();
         String contents = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
         Assert.assertTrue("File is empty initially", contents.isEmpty());
         logger.logEvent(event);
@@ -44,8 +51,7 @@ public class TestCacheFileEventLogger {
     @Test
     public void testDestroy() throws IOException {
         Event event = new Event(new Date(), DateFormat.getDateInstance());
-        CacheFileEventLogger logger = new CacheFileEventLogger(file.getAbsolutePath(), 2);
-        logger.init();
+        CacheFileEventLogger logger = createAndInitCacheFileEventLogger();
         String contents = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
         Assert.assertTrue("File is empty initially", contents.isEmpty());
         logger.logEvent(event);

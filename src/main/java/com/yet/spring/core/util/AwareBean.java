@@ -5,6 +5,8 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.*;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class AwareBean implements ApplicationContextAware, BeanNameAware, ApplicationEventPublisherAware {
 
@@ -12,6 +14,7 @@ public class AwareBean implements ApplicationContextAware, BeanNameAware, Applic
     private String name;
     private ApplicationContext ctx;
 
+    @PostConstruct
     public void init() {
         System.out.println(this.getClass().getSimpleName() + " > My name is '"
                 + name + "'");

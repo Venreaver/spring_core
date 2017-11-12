@@ -4,6 +4,8 @@ import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
 import com.yet.spring.core.loggers.EventLogger;
+import com.yet.spring.core.spring.AppConfig;
+import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;

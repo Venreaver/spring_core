@@ -1,4 +1,4 @@
-package com.yet.spring.core;
+package com.yet.spring.core.spring;
 
 import com.yet.spring.core.beans.EventType;
 import com.yet.spring.core.loggers.*;

@@ -1,4 +1,4 @@
-package com.yet.spring.core;
+package com.yet.spring.core.spring;
 
 import com.yet.spring.core.beans.Client;
 import org.springframework.beans.factory.annotation.Autowired;

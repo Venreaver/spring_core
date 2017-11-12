@@ -12,9 +12,13 @@ import java.util.List;
 
 @Component
 public class CacheFileEventLogger extends FileEventLogger {
+    // Use system property cache.size or 5 if property is not set
     @Value("4")
     private int cacheSize;
     List<Event> cache;
+
+    public CacheFileEventLogger() {
+    }
 
     public CacheFileEventLogger(String filename, int cacheSize) {
         super(filename);
@@ -36,8 +40,7 @@ public class CacheFileEventLogger extends FileEventLogger {
     }
 
     @PostConstruct
-    void init() throws IOException {
-        super.init();
+    void initCache() throws IOException {
         cache = new ArrayList<>(cacheSize);
     }
 

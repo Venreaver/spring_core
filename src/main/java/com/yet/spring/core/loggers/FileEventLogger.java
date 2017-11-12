@@ -11,14 +11,14 @@ import java.io.IOException;
 
 @Component
 public class FileEventLogger implements EventLogger {
-    @Value("target/events_log.txt")
+    @Value("${events.file:target/events_log.txt}")
     private String filename;
     private File file;
 
     public FileEventLogger() {
     }
 
-    FileEventLogger(String filename) {
+    public FileEventLogger(String filename) {
         this.filename = filename;
     }
 
