@@ -30,10 +30,9 @@ public class FileEventLogger implements EventLogger {
 
     public void logEvent(Event event) {
         try (FileWriter fw = new FileWriter(file, true)) {
-//            fw.write(1);
             fw.write(event.toString());
         } catch (IOException e) {
-            System.err.println("Can't create a file or write to a file " + filename);
+            e.printStackTrace();
         }
     }
 }
