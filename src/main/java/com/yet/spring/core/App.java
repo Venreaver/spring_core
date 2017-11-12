@@ -1,9 +1,13 @@
 package com.yet.spring.core;
 
 import com.yet.spring.core.beans.Client;
+import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.loggers.EventLogger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Collections;
+import java.util.List;
 
 public class App {
     private Client client;
@@ -14,15 +18,17 @@ public class App {
         this.eventLogger = eventLogger;
     }
 
-    public void logEvent(String msg) {
-        eventLogger.logEvent(msg.replaceAll(client.getId(), client.getFullName()));
+    public void logEvent(Event event, String msg) {
+        event.setMsg(msg.replaceAll(client.getId(), client.getFullName()));
+        eventLogger.logEvent(event);
     }
 
     public static void main(String[] args) {
-        @SuppressWarnings("resource") // We will remove this suppress in further lessons
-                ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
-        app.logEvent("Some event for user 1");
-        app.logEvent("Some event for user 2");
+        Event event = ctx.getBean(Event.class);
+        app.logEvent(event, "Some event for user 1");
+        event = (Event) ctx.getBean("event");
+        app.logEvent(event, "Some event for user 2");
     }
 }

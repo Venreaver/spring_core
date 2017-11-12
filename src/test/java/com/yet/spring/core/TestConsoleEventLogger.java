@@ -1,5 +1,6 @@
 package com.yet.spring.core;
 
+import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.loggers.ConsoleEventLogger;
 import org.junit.After;
 import org.junit.Assert;
@@ -8,6 +9,8 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 public class TestConsoleEventLogger {
     private static final String MSG = "Message";
@@ -26,7 +29,11 @@ public class TestConsoleEventLogger {
     @Test
     public void testLogEvent() {
         ConsoleEventLogger logger = new ConsoleEventLogger();
-        logger.logEvent(MSG);
+        Date date = new Date();
+        Event event = new Event(date, DateFormat.getDateTimeInstance());
+        event.setMsg(MSG);
+        logger.logEvent(event);
         Assert.assertTrue(outContent.toString().contains(MSG));
+        Assert.assertEquals(event.toString().trim(), outContent.toString().trim());
     }
 }
