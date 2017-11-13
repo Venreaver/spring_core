@@ -38,7 +38,7 @@
 
     <util:map id="loggerMap">
         <entry key="INFO" value-ref="consoleEventLogger"/>
-        <entry key="ERROR" value-ref="combineEventLogger"/>
+        <entry key="ERROR" value-ref="combinedEventLogger"/>
     </util:map>
 
     <bean id="event" class="com.yet.spring.core.beans.Event" scope="prototype"

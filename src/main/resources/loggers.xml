@@ -19,8 +19,8 @@
           p:name="#{fileEventLogger.name + ' with cache'}">
     </bean>
 
-    <bean id="combineEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger"
-          p:name="#{'Combined ' + combineEventLogger.loggers.![name].toString()}">
+    <bean id="combinedEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger"
+          p:name="#{'Combined ' + combinedEventLogger.loggers.![name].toString()}">
         <constructor-arg>
             <list>
                 <ref bean="consoleEventLogger"/>
