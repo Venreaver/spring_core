@@ -1,6 +1,7 @@
 package com.yet.spring.core.beans;
 
 import java.text.DateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,6 +17,11 @@ public class Event {
         id = AUTO_ID.getAndIncrement();
         this.date = date;
         this.df = df;
+    }
+
+    public static boolean isDay(int start, int end) {
+        LocalTime time = LocalTime.now();
+        return time.getHour() > start && time.getHour() < end;
     }
 
     public void setMsg(String msg) {

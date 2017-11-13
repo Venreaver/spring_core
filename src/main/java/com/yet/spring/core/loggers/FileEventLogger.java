@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileEventLogger implements EventLogger {
+public class FileEventLogger extends AbstractLogger {
     private File file;
     private String filename;
 
@@ -14,7 +14,7 @@ public class FileEventLogger implements EventLogger {
         this.filename = filename;
     }
 
-    void init() throws IOException{
+    void init() throws IOException {
         this.file = new File(filename);
         if (!file.exists()) {
             file.createNewFile();

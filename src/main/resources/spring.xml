@@ -18,28 +18,31 @@
                 <value>classpath:client.properties</value>
             </list>
         </property>
-        <property name="ignoreResourceNotFound" value="true"/> <!--опциональные ресурсы, по умолчанию false, если нет ресурсов = exception-->
+        <property name="ignoreResourceNotFound" value="true"/>
         <property name="systemPropertiesMode">
             <util:constant
-                static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
         </property>
-        <!--<property name="systemPropertiesMode" value="override"/>--><!--свойства системы будут просмотрены первыми-->
     </bean>
 
     <bean id="client" class="com.yet.spring.core.beans.Client"
           c:id="${id}" c:fullName="${name}" p:greeting="${greeting}"/>
     <bean id="app" class="com.yet.spring.core.App"
-          c:client-ref="client" c:defaultLogger-ref="cacheFileEventLogger" c:loggers-ref="loggerMap"/>
+          c:client-ref="client"
+          c:defaultLogger="#{T(com.yet.spring.core.beans.Event).isDay(8, 17) ? cacheFileEventLogger : consoleEventLogger}"
+          c:loggers-ref="loggerMap"
+          p:startupMessage="#{'Hello user ' + (systemProperties['os.arch'].equals('amd64')
+                                              ? systemEnvironment['USERNAME']
+                                              : systemEnvironment['USER']) +
+                                              '. Default logger is ' + app.defaultLogger.name}"/>
 
     <util:map id="loggerMap">
         <entry key="INFO" value-ref="consoleEventLogger"/>
         <entry key="ERROR" value-ref="combineEventLogger"/>
     </util:map>
 
-    <bean id="event" class="com.yet.spring.core.beans.Event" scope="prototype" c:df-ref="dateFormat">
-        <constructor-arg>
-            <bean class="java.util.Date"/>
-        </constructor-arg>
+    <bean id="event" class="com.yet.spring.core.beans.Event" scope="prototype"
+          c:date="#{new java.util.Date()}" c:df="#{T(java.text.DateFormat).getDateTimeInstance()}">
     </bean>
 
     <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>

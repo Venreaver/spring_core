@@ -4,7 +4,7 @@ import com.yet.spring.core.beans.Event;
 
 import java.util.Collection;
 
-public class CombinedEventLogger implements EventLogger {
+public class CombinedEventLogger extends AbstractLogger {
     Collection<EventLogger> loggers;
 
     public CombinedEventLogger(Collection<EventLogger> loggers) {
@@ -14,5 +14,9 @@ public class CombinedEventLogger implements EventLogger {
     @Override
     public void logEvent(Event event) {
         loggers.forEach(lg -> lg.logEvent(event));
+    }
+
+    public Collection<EventLogger> getLoggers() {
+        return loggers;
     }
 }

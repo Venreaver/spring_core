@@ -2,7 +2,10 @@ package com.yet.spring.core.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.context.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 
 public class AwareBean implements ApplicationContextAware, BeanNameAware, ApplicationEventPublisherAware {
 

@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd">
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+>
 
-    <bean id="consoleEventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger"/>
+    <bean id="consoleEventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger" p:name="Console logger"/>
 
-    <bean id="fileEventLogger" class="com.yet.spring.core.loggers.FileEventLogger" init-method="init">
+    <bean id="fileEventLogger" class="com.yet.spring.core.loggers.FileEventLogger" init-method="init"
+          p:name="File logger">
         <constructor-arg value="target/events_log.txt"/>
     </bean>
 
     <bean id="cacheFileEventLogger" class="com.yet.spring.core.loggers.CacheFileEventLogger"
-          parent="fileEventLogger" destroy-method="destroy">
-        <constructor-arg index="1" value="4"/>
+          parent="fileEventLogger" destroy-method="destroy" c:cacheSize="4"
+          p:name="#{fileEventLogger.name + ' with cache'}">
     </bean>
 
-    <bean id="combineEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger">
+    <bean id="combineEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger"
+          p:name="#{'Combined ' + combineEventLogger.loggers.![name].toString()}">
         <constructor-arg>
             <list>
                 <ref bean="consoleEventLogger"/>
