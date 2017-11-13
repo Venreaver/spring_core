@@ -1,12 +1,11 @@
 package com.yet.spring.core.beans;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.text.DateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,11 +17,10 @@ public class Event {
     private int id;
     private String msg;
 
-    @Autowired
-    @Qualifier("newDate")
+    @Value("#{new java.util.Date()}")
     private Date date;
 
-    @Autowired
+    @Value("#{T(java.text.DateFormat).getDateTimeInstance()}")
     private DateFormat df;
 
     public Event() {
@@ -33,6 +31,11 @@ public class Event {
         this();
         this.date = date;
         this.df = df;
+    }
+
+    public static boolean isDay(int start, int end) {
+        LocalTime time = LocalTime.now();
+        return time.getHour() > start && time.getHour() < end;
     }
 
     public void setMsg(String msg) {

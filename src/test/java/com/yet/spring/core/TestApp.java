@@ -3,6 +3,7 @@ package com.yet.spring.core;
 import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
+import com.yet.spring.core.loggers.AbstractLogger;
 import com.yet.spring.core.loggers.EventLogger;
 import org.junit.Test;
 
@@ -79,7 +80,7 @@ public class TestApp {
         method.invoke(app, type, event, message);
     }
 
-    private class DummyLogger implements EventLogger {
+    private class DummyLogger extends AbstractLogger {
         private Event event;
 
         @Override
@@ -93,6 +94,11 @@ public class TestApp {
 
         public void setEvent(Event event) {
             this.event = event;
+        }
+
+        @Override
+        protected void setName(String name) {
+            this.name = name;
         }
     }
 }

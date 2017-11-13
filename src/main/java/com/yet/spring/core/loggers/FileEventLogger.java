@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @Component
-public class FileEventLogger implements EventLogger {
+public class FileEventLogger extends AbstractLogger {
     @Value("${events.file:target/events_log.txt}")
     private String filename;
     private File file;
@@ -23,7 +23,7 @@ public class FileEventLogger implements EventLogger {
     }
 
     @PostConstruct
-    void init() throws IOException{
+    void init() throws IOException {
         this.file = new File(filename);
         if (!file.exists()) {
             file.createNewFile();
@@ -40,5 +40,11 @@ public class FileEventLogger implements EventLogger {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Value("File logger")
+    @Override
+    protected void setName(String name) {
+        this.name = name;
     }
 }

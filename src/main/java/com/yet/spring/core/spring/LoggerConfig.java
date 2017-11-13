@@ -1,7 +1,10 @@
 package com.yet.spring.core.spring;
 
 import com.yet.spring.core.beans.EventType;
-import com.yet.spring.core.loggers.*;
+import com.yet.spring.core.loggers.CombinedEventLogger;
+import com.yet.spring.core.loggers.ConsoleEventLogger;
+import com.yet.spring.core.loggers.EventLogger;
+import com.yet.spring.core.loggers.FileEventLogger;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +26,6 @@ public class LoggerConfig {
     private ConsoleEventLogger consoleEventLogger;
     @Resource(name = "fileEventLogger")
     private FileEventLogger fileEventLogger;
-    @Resource(name = "cacheFileEventLogger")
-    private CacheFileEventLogger cacheFileEventLogger;
     @Resource(name = "combinedEventLogger")
     private CombinedEventLogger combinedEventLogger;
 
@@ -42,10 +43,5 @@ public class LoggerConfig {
         map.put(EventType.INFO, consoleEventLogger);
         map.put(EventType.ERROR, combinedEventLogger);
         return map;
-    }
-
-    @Bean()
-    public EventLogger defaultLogger() {
-        return cacheFileEventLogger;
     }
 }

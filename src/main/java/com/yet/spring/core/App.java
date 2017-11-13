@@ -7,6 +7,7 @@ import com.yet.spring.core.loggers.EventLogger;
 import com.yet.spring.core.spring.AppConfig;
 import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,13 @@ public class App {
     @Autowired
     private Client client;
 
-    @Resource(name = "defaultLogger")
+    @Value("#{T(com.yet.spring.core.beans.Event).isDay(8, 17) ? cacheFileEventLogger : consoleEventLogger}")
     private EventLogger defaultLogger;
+
+    @Value("#{'Hello user ' + (systemProperties['os.arch'].equals('amd64') " +
+            "? systemEnvironment['USERNAME'] : systemEnvironment['USER']) " +
+            "+'. Default logger is ' + app.defaultLogger.name}")
+    private String startupMessage;
 
     @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
@@ -32,6 +38,10 @@ public class App {
         this.client = client;
         this.defaultLogger = defaultLogger;
         this.loggers = loggers;
+    }
+
+    public EventLogger getDefaultLogger() {
+        return defaultLogger;
     }
 
     public void logEvent(EventType eventType, Event event, String msg) {
@@ -51,7 +61,7 @@ public class App {
         context.registerShutdownHook();
 
         App app = (App) context.getBean("app");
-
+        System.out.println(app.startupMessage);
         Client client = context.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
 
