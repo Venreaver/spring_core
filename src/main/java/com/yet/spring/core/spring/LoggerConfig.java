@@ -1,13 +1,10 @@
 package com.yet.spring.core.spring;
 
 import com.yet.spring.core.beans.EventType;
-import com.yet.spring.core.loggers.CombinedEventLogger;
-import com.yet.spring.core.loggers.ConsoleEventLogger;
 import com.yet.spring.core.loggers.EventLogger;
-import com.yet.spring.core.loggers.FileEventLogger;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -18,16 +15,16 @@ import java.util.Map;
 @Configuration
 public class LoggerConfig {
     @Bean
-    public static PropertyPlaceholderConfigurer propertyConfigurer() {
-        return new PropertyPlaceholderConfigurer();
+    public static PropertySourcesPlaceholderConfigurer propertyConfigIn() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Resource(name = "consoleEventLogger")
-    private ConsoleEventLogger consoleEventLogger;
+    private EventLogger consoleEventLogger;
     @Resource(name = "fileEventLogger")
-    private FileEventLogger fileEventLogger;
+    private EventLogger fileEventLogger;
     @Resource(name = "combinedEventLogger")
-    private CombinedEventLogger combinedEventLogger;
+    private EventLogger combinedEventLogger;
 
     @Bean
     public Collection<EventLogger> combinedLoggers() {
@@ -39,7 +36,7 @@ public class LoggerConfig {
 
     @Bean
     public Map<EventType, EventLogger> loggerMap() {
-        Map<EventType, EventLogger> map = new EnumMap<EventType, EventLogger>(EventType.class);
+        Map<EventType, EventLogger> map = new EnumMap<>(EventType.class);
         map.put(EventType.INFO, consoleEventLogger);
         map.put(EventType.ERROR, combinedEventLogger);
         return map;
