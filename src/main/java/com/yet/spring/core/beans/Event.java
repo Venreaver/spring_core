@@ -42,6 +42,6 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event [id=" + id + ", msg=" + msg + ", date=" + df.format(date) + "]";
+        return "Event [id=" + id + ", msg=" + msg + ", date=" + df.format(date) + "]\n";
     }
 }
