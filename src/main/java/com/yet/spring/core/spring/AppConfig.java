@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 @PropertySource("classpath:client.properties")
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 public class AppConfig {
     @Autowired
     private Environment environment;

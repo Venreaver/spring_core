@@ -48,7 +48,7 @@ public class App {
         return defaultLogger;
     }
 
-    public void logEvent(EventType eventType, Event event, String msg) {
+    private void logEventMsg(EventType eventType, Event event, String msg) {
         event.setMsg(msg.replaceAll(client.getId(), client.getFullName()));
         EventLogger logger = loggers.get(eventType);
         if (logger == null) {
@@ -62,7 +62,6 @@ public class App {
         context.register(AppConfig.class, LoggerConfig.class);
         context.scan("com.yet.spring.core");
         context.refresh();
-        context.registerShutdownHook();
 
         App app = (App) context.getBean("app");
         System.out.println(app.startupMessage);
@@ -70,21 +69,22 @@ public class App {
         System.out.println("Client says: " + client.getGreeting());
 
         Event event = context.getBean(Event.class);
-        app.logEvent(EventType.INFO, event, "Some event for user 1");
+        app.logEventMsg(EventType.INFO, event, "Some event for user 1");
 
         event = context.getBean(Event.class);
-        app.logEvent(EventType.INFO, event, "One more event for 1");
+        app.logEventMsg(EventType.INFO, event, "One more event for 1");
 
         event = context.getBean(Event.class);
-        app.logEvent(EventType.INFO, event, "And one more event for 1");
+        app.logEventMsg(EventType.INFO, event, "And one more event for 1");
 
         event = (Event) context.getBean("event");
-        app.logEvent(EventType.ERROR, event, "Some event for user 2");
+        app.logEventMsg(EventType.ERROR, event, "Some event for user 2");
 
         event = (Event) context.getBean("event");
-        app.logEvent(EventType.ERROR, event, "Some event for user 3");
+        app.logEventMsg(EventType.ERROR, event, "Some event for user 3");
 
         app.outPutLoggingCounter();
+        context.close();
     }
 
     private void outPutLoggingCounter() {
