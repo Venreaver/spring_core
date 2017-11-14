@@ -7,6 +7,15 @@
     <groupId>com.yet.spring</groupId>
     <artifactId>com.yet.spring.core</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <spring.version>4.3.12.RELEASE</spring.version>
+        <junit.version>4.12</junit.version>
+        <aspectj.version>1.8.9</aspectj.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -16,18 +25,14 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <compilerVersion>${java.version}</compilerVersion>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <name>Spring Basics Course Project</name>
     <description>The project created throughout the course 'Spring Framework - The Basics'</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <spring.version>4.3.10.RELEASE</spring.version>
-        <junit.version>4.12</junit.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -50,7 +55,11 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
