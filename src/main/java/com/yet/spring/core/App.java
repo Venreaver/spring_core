@@ -1,5 +1,6 @@
 package com.yet.spring.core;
 
+import com.yet.spring.core.aspects.StatisticsAspect;
 import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
@@ -18,6 +19,9 @@ import java.util.Map;
 public class App {
     @Autowired
     private Client client;
+
+    @Autowired
+    private StatisticsAspect statisticsAspect;
 
     @Value("#{T(com.yet.spring.core.beans.Event).isDay(8, 17) ? cacheFileEventLogger : consoleEventLogger}")
     private EventLogger defaultLogger;
@@ -68,10 +72,26 @@ public class App {
         Event event = context.getBean(Event.class);
         app.logEvent(EventType.INFO, event, "Some event for user 1");
 
+        event = context.getBean(Event.class);
+        app.logEvent(EventType.INFO, event, "One more event for 1");
+
+        event = context.getBean(Event.class);
+        app.logEvent(EventType.INFO, event, "And one more event for 1");
+
         event = (Event) context.getBean("event");
         app.logEvent(EventType.ERROR, event, "Some event for user 2");
 
         event = (Event) context.getBean("event");
         app.logEvent(EventType.ERROR, event, "Some event for user 3");
+
+        app.outPutLoggingCounter();
+    }
+
+    private void outPutLoggingCounter() {
+        if (statisticsAspect != null) {
+            System.out.println("Loggers statistics. Number of calls: ");
+            statisticsAspect.getCounter()
+                    .forEach((key, value) -> System.out.println("   " + key.getSimpleName() + ": " + value));
+        }
     }
 }

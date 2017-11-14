@@ -17,7 +17,7 @@ public class CombinedEventLogger extends AbstractLogger {
         loggers.forEach(lg -> lg.logEvent(event));
     }
 
-    @Value("#{'Combined ' + combinedEventLogger.loggers.![name].toString()}")
+    @Value("#{'Combined ' + combinedLoggers.![name].toString()}")
     @Override
     protected void setName(String name) {
         this.name = name;
