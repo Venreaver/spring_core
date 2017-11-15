@@ -1,5 +1,6 @@
 package com.yet.spring.core;
 
+import com.yet.spring.core.aspects.StatisticsAspect;
 import com.yet.spring.core.beans.Client;
 import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
@@ -14,6 +15,7 @@ public class App {
     private EventLogger defaultLogger;
     private Map<EventType, EventLogger> loggers;
     private String startupMessage;
+    private StatisticsAspect statisticsAspect;
 
     public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
@@ -25,11 +27,15 @@ public class App {
         this.startupMessage = startupMessage;
     }
 
+    public void setStatisticsAspect(StatisticsAspect statisticsAspect) {
+        this.statisticsAspect = statisticsAspect;
+    }
+
     public EventLogger getDefaultLogger() {
         return defaultLogger;
     }
 
-    public void logEvent(EventType eventType, Event event, String msg) {
+    private void logEventMsg(EventType eventType, Event event, String msg) {
         event.setMsg(msg.replaceAll(client.getId(), client.getFullName()));
         EventLogger logger = loggers.get(eventType);
         if (logger == null) {
@@ -46,8 +52,21 @@ public class App {
         Client client = ctx.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
         Event event = ctx.getBean(Event.class);
-        app.logEvent(EventType.INFO, event, "Some event for user 1");
+        app.logEventMsg(EventType.INFO, event, "Some event for user 1");
+        event = ctx.getBean(Event.class);
+        app.logEventMsg(EventType.INFO, event, "One more event for 1");
+        event = ctx.getBean(Event.class);
+        app.logEventMsg(EventType.INFO, event, "And one more event for 1");
         event = (Event) ctx.getBean("event");
-        app.logEvent(EventType.ERROR, event, "Some event for user 2");
+        app.logEventMsg(EventType.ERROR, event, "Some event for user 2");
+        app.outPutLoggingCounter();
+    }
+
+    private void outPutLoggingCounter() {
+        if (statisticsAspect != null) {
+            System.out.println("Loggers statistics. Number of calls: ");
+            statisticsAspect.getCounter()
+                    .forEach((key, value) -> System.out.println("   " + key.getSimpleName() + ": " + value));
+        }
     }
 }

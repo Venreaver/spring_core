@@ -3,8 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
 >
 
     <bean id="consoleEventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger" p:name="Console logger"/>
@@ -19,14 +21,14 @@
           p:name="#{fileEventLogger.name + ' with cache'}">
     </bean>
 
+    <util:list id="combinedLoggersList">
+        <ref bean="consoleEventLogger" />
+        <ref bean="fileEventLogger" />
+    </util:list>
+
     <bean id="combinedEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger"
-          p:name="#{'Combined ' + combinedEventLogger.loggers.![name].toString()}">
-        <constructor-arg>
-            <list>
-                <ref bean="consoleEventLogger"/>
-                <ref bean="fileEventLogger"/>
-            </list>
-        </constructor-arg>
-    </bean>
+          c:loggers-ref="combinedLoggersList"
+          p:name="#{'Combined ' + combinedLoggersList.![name].toString()}"
+    />
 
 </beans>
