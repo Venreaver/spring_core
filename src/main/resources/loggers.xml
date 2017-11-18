@@ -6,7 +6,8 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd"
 >
 
     <bean id="consoleEventLogger" class="com.yet.spring.core.loggers.ConsoleEventLogger" p:name="Console logger"/>
@@ -21,9 +22,18 @@
           p:name="#{fileEventLogger.name + ' with cache'}">
     </bean>
 
+    <bean id="dbLogger" class="com.yet.spring.core.loggers.DBLogger"
+          c:jdbcTemplate-ref="jdbcTemplate"
+          c:schema="${jdbc.username}"
+          p:name="DataBase Logger"
+          init-method="init"
+          destroy-method="destroy"
+    />
+
     <util:list id="combinedLoggersList">
         <ref bean="consoleEventLogger" />
         <ref bean="fileEventLogger" />
+        <ref bean="dbLogger"/>
     </util:list>
 
     <bean id="combinedEventLogger" class="com.yet.spring.core.loggers.CombinedEventLogger"

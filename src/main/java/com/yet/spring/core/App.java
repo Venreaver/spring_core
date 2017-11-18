@@ -45,7 +45,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ConfigurableApplicationContext ctx =
+                new ClassPathXmlApplicationContext("spring.xml", "loggers.xml", "aspects.xml", "db.xml");
         ctx.registerShutdownHook();
         App app = (App) ctx.getBean("app");
         System.out.println(app.startupMessage);

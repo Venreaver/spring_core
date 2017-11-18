@@ -11,17 +11,27 @@ public class Event {
     private int id;
     private String msg;
     private Date date;
-    private DateFormat df;
+    private DateFormat dateFormat;
 
-    public Event(Date date, DateFormat df) {
+    public Event(Date date, DateFormat dateFormat) {
         id = AUTO_ID.getAndIncrement();
         this.date = date;
-        this.df = df;
+        this.dateFormat = dateFormat;
+    }
+
+    public Event(int id, Date date, String msg) {
+        this.id = id;
+        this.date = date;
+        this.msg = msg;
     }
 
     public static boolean isDay(int start, int end) {
         LocalTime time = LocalTime.now();
         return time.getHour() > start && time.getHour() < end;
+    }
+
+    public static void initAutoId(int id) {
+        AUTO_ID.set(id);
     }
 
     public void setMsg(String msg) {
@@ -40,8 +50,16 @@ public class Event {
         return date;
     }
 
+    public DateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(DateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
     @Override
     public String toString() {
-        return "Event [id=" + id + ", msg=" + msg + ", date=" + df.format(date) + "]\n";
+        return "Event [id=" + id + ", msg=" + msg + ", date=" + dateFormat.format(date) + "]\n";
     }
 }
