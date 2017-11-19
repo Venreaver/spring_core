@@ -2,6 +2,8 @@
 *.iml
 
 target/
+/derby.log
+/.c9
 
 # Package Files #
 *.jar

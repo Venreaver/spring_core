@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
+import com.yet.spring.core.loggers.DBLogger;
 import org.aspectj.lang.JoinPoint;
 import org.junit.Test;
 
@@ -22,19 +23,22 @@ public class TestStatisticsAspect {
         when(jp.getTarget())
                 .thenReturn(new ConsoleEventLogger())
                 .thenReturn(new CombinedEventLogger())
-                .thenReturn(new ConsoleEventLogger());
+                .thenReturn(new ConsoleEventLogger())
+                .thenReturn(new DBLogger());
 
         StatisticsAspect aspect = new StatisticsAspect();
 
         aspect.count(jp);
         aspect.count(jp);
         aspect.count(jp);
+        aspect.count(jp);
 
-        verify(jp, atMost(3)).getTarget();
+        verify(jp, atMost(4)).getTarget();
 
         Map<Class<?>, Integer> counters = aspect.getCounter();
-        assertEquals(2, counters.size());
+        assertEquals(3, counters.size());
         assertEquals(2, counters.get(ConsoleEventLogger.class).intValue());
         assertEquals(1, counters.get(CombinedEventLogger.class).intValue());
+        assertEquals(1, counters.get(DBLogger.class).intValue());
     }
 }

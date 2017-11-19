@@ -7,7 +7,9 @@ import com.yet.spring.core.loggers.CombinedEventLogger;
 import com.yet.spring.core.loggers.EventLogger;
 import com.yet.spring.core.loggers.FileEventLogger;
 import com.yet.spring.core.spring.AppConfig;
+import com.yet.spring.core.spring.DBConfig;
 import com.yet.spring.core.spring.LoggerConfig;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -23,6 +25,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestContext {
+    @BeforeClass
+    public static void initTestDbProps() {
+        System.setProperty("DB_PROPS", "classpath:db_for_test.properties");
+    }
 
     @Test
     public void testPropertyPlaceholderSystemOverride() {
@@ -49,18 +55,19 @@ public class TestContext {
     @Test
     public void testFileEventLoggerEventsFileDefaultValue() throws IOException {
         File file = new File("target/events_log.txt");
-        assertFileEventLogger(file);
+        assertFileEventLogger(file);;
     }
 
     private void assertFileEventLogger(File file) throws IOException {
         System.setProperty("events.file", file.getAbsolutePath());
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(LoggerConfig.class);
+        ctx.register(LoggerConfig.class, DBConfig.class);
         ctx.scan(FileEventLogger.class.getPackage().getName());
         ctx.refresh();
 
-        EventLogger logger = ctx.getBean("fileEventLogger", FileEventLogger.class);
+        EventLogger logger = ctx.getBean("fileEventLogger",
+                FileEventLogger.class);
         Event event = new Event();
         String uuid = UUID.randomUUID().toString();
         event.setMsg(uuid);
@@ -75,7 +82,7 @@ public class TestContext {
     @Test
     public void testLoggersNames() {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(LoggerConfig.class);
+        ctx.register(LoggerConfig.class, DBConfig.class);
         ctx.scan(FileEventLogger.class.getPackage().getName());
         ctx.refresh();
 

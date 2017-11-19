@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-@Component
+@Component("fileEventLogger")
 public class FileEventLogger extends AbstractLogger {
     @Value("${events.file:target/events_log.txt}")
     private String filename;

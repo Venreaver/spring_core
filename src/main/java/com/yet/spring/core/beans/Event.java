@@ -1,5 +1,6 @@
 package com.yet.spring.core.beans;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.text.DateFormat;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -21,21 +23,31 @@ public class Event {
     private Date date;
 
     @Value("#{T(java.text.DateFormat).getDateTimeInstance()}")
-    private DateFormat df;
+    private DateFormat dateFormat;
 
     public Event() {
         id = AUTO_ID.getAndIncrement();
     }
 
-    public Event(Date date, DateFormat df) {
-        this();
+    public Event(Date date, DateFormat dateFormat) {
+        id = AUTO_ID.getAndIncrement();
         this.date = date;
-        this.df = df;
+        this.dateFormat = dateFormat;
+    }
+
+    public Event(int id, Date date, String msg) {
+        this.id = id;
+        this.date = date;
+        this.msg = msg;
     }
 
     public static boolean isDay(int start, int end) {
         LocalTime time = LocalTime.now();
         return time.getHour() > start && time.getHour() < end;
+    }
+
+    public static void initAutoId(int id) {
+        AUTO_ID.set(id);
     }
 
     public void setMsg(String msg) {
@@ -54,9 +66,32 @@ public class Event {
         return date;
     }
 
+    public DateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(DateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return id == event.id &&
+                Objects.equals(msg, event.msg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, msg, date, dateFormat);
+    }
+
     @Override
     public String toString() {
-        return "Event [id=" + id + ", msg=" + msg + ", date="
-                + (df != null ? df.format(date) : date) + "]\n";
+        return String.format("Event [id=%d, msg=%s, date=%s]\n", id, msg, dateFormat != null
+                ? dateFormat.format(date)
+                : "");
     }
 }

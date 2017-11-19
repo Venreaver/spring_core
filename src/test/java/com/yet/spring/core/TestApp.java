@@ -75,7 +75,7 @@ public class TestApp {
 
     private void invokeLogEvent(App app, EventType type, Event event, String message) throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
-        Method method = app.getClass().getDeclaredMethod("logEvent", EventType.class, Event.class, String.class);
+        Method method = app.getClass().getDeclaredMethod("logEventMsg", EventType.class, Event.class, String.class);
         method.setAccessible(true);
         method.invoke(app, type, event, message);
     }

@@ -6,9 +6,11 @@ import com.yet.spring.core.beans.Event;
 import com.yet.spring.core.beans.EventType;
 import com.yet.spring.core.loggers.EventLogger;
 import com.yet.spring.core.spring.AppConfig;
+import com.yet.spring.core.spring.DBConfig;
 import com.yet.spring.core.spring.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -57,41 +59,33 @@ public class App {
         logger.logEvent(event);
     }
 
+    public void logEvents(ApplicationContext context) {
+        Event event = context.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "Some event for user 1");
+
+        event = context.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "One more event for 1");
+
+        event = context.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "And one more event for 1");
+
+        event = (Event) context.getBean("event");
+        logEventMsg(EventType.ERROR, event, "Some event for user 2");
+
+        event = (Event) context.getBean("event");
+        logEventMsg(EventType.ERROR, event, "Some event for user 3");
+    }
+
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AppConfig.class, LoggerConfig.class);
+        context.registerShutdownHook();
+        context.register(AppConfig.class, LoggerConfig.class, DBConfig.class);
         context.scan("com.yet.spring.core");
         context.refresh();
-
         App app = (App) context.getBean("app");
         System.out.println(app.startupMessage);
         Client client = context.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
-
-        Event event = context.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "Some event for user 1");
-
-        event = context.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "One more event for 1");
-
-        event = context.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "And one more event for 1");
-
-        event = (Event) context.getBean("event");
-        app.logEventMsg(EventType.ERROR, event, "Some event for user 2");
-
-        event = (Event) context.getBean("event");
-        app.logEventMsg(EventType.ERROR, event, "Some event for user 3");
-
-        app.outPutLoggingCounter();
-        context.close();
-    }
-
-    private void outPutLoggingCounter() {
-        if (statisticsAspect != null) {
-            System.out.println("Loggers statistics. Number of calls: ");
-            statisticsAspect.getCounter()
-                    .forEach((key, value) -> System.out.println("   " + key.getSimpleName() + ": " + value));
-        }
+        app.logEvents(context);
     }
 }

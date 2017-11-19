@@ -23,14 +23,18 @@ public class LoggerConfig {
     private EventLogger consoleEventLogger;
     @Resource(name = "fileEventLogger")
     private EventLogger fileEventLogger;
+    @Resource(name = "dbLogger")
+    private EventLogger dbLogger;
     @Resource(name = "combinedEventLogger")
     private EventLogger combinedEventLogger;
 
+
     @Bean
     public Collection<EventLogger> combinedLoggers() {
-        Collection<EventLogger> loggers = new ArrayList<>(2);
+        Collection<EventLogger> loggers = new ArrayList<>(3);
         loggers.add(consoleEventLogger);
         loggers.add(fileEventLogger);
+        loggers.add(dbLogger);
         return loggers;
     }
 

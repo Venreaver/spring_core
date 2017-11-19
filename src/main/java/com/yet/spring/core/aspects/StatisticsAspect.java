@@ -26,6 +26,12 @@ public class StatisticsAspect {
         counter.merge(clazz, 1, (oldV, newV) -> ++oldV);
     }
 
+    @AfterReturning("execution(* *.logEvents(..))")
+    public void outputLoggingCounter() {
+        System.out.println("Loggers statistics. Number of calls: ");
+        counter.forEach((key, value) -> System.out.println("   " + key.getSimpleName() + ": " + value));
+    }
+
     public Map<Class<?>, Integer> getCounter() {
         return Collections.unmodifiableMap(counter);
     }
