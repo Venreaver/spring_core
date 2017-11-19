@@ -17,6 +17,9 @@ public class App {
     private String startupMessage;
     private StatisticsAspect statisticsAspect;
 
+    public App() {
+    }
+
     public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
         this.defaultLogger = defaultLogger;
@@ -47,27 +50,28 @@ public class App {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx =
                 new ClassPathXmlApplicationContext("spring.xml", "loggers.xml", "aspects.xml", "db.xml");
-        ctx.registerShutdownHook();
         App app = (App) ctx.getBean("app");
         System.out.println(app.startupMessage);
         Client client = ctx.getBean(Client.class);
         System.out.println("Client says: " + client.getGreeting());
-        Event event = ctx.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "Some event for user 1");
-        event = ctx.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "One more event for 1");
-        event = ctx.getBean(Event.class);
-        app.logEventMsg(EventType.INFO, event, "And one more event for 1");
-        event = (Event) ctx.getBean("event");
-        app.logEventMsg(EventType.ERROR, event, "Some event for user 2");
-        app.outPutLoggingCounter();
+        app.logEvents(ctx);
+        ctx.close();
     }
 
-    private void outPutLoggingCounter() {
-        if (statisticsAspect != null) {
-            System.out.println("Loggers statistics. Number of calls: ");
-            statisticsAspect.getCounter()
-                    .forEach((key, value) -> System.out.println("   " + key.getSimpleName() + ": " + value));
-        }
+    void logEvents(ConfigurableApplicationContext ctx) {
+        Event event = ctx.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "Some event for user 1");
+
+        event = ctx.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "One more event for 1");
+
+        event = ctx.getBean(Event.class);
+        logEventMsg(EventType.INFO, event, "And one more event for 1");
+
+        event = (Event) ctx.getBean("event");
+        logEventMsg(EventType.ERROR, event, "Some event for user 2");
+
+        event = (Event) ctx.getBean("event");
+        logEventMsg(EventType.ERROR, event, "Some event for user 3");
     }
 }

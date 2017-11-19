@@ -3,6 +3,7 @@ package com.yet.spring.core.beans;
 import java.text.DateFormat;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Event {
@@ -59,7 +60,23 @@ public class Event {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return id == event.id &&
+                Objects.equals(msg, event.msg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, msg, date, dateFormat);
+    }
+
+    @Override
     public String toString() {
-        return "Event [id=" + id + ", msg=" + msg + ", date=" + dateFormat.format(date) + "]\n";
+        return String.format("Event [id=%d, msg=%s, date=%s]\n", id, msg, dateFormat != null
+                ? dateFormat.format(date)
+                : "");
     }
 }

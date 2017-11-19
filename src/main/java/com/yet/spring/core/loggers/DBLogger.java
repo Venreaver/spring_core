@@ -36,6 +36,7 @@ public class DBLogger extends AbstractLogger {
                 .map(String::valueOf)
                 .collect(Collectors.joining(", "));
         System.out.println("All DB Event ids: " + allEventIds);
+        jdbcTemplate.update("DROP TABLE t_event");
     }
 
     private void createDBSchema() {
@@ -91,7 +92,7 @@ public class DBLogger extends AbstractLogger {
     @Override
     public void logEvent(Event event) {
         jdbcTemplate.update("INSERT INTO t_event (id, date, msg) VALUES (?,?,?)", event.getId(), event.getDate(),
-                event.toString());
+                event.getMsg());
         System.out.println("Saved to DB event with id " + event.getId());
     }
 
