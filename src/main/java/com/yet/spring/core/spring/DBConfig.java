@@ -11,7 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("${DB_PROPS:classpath:db.properties}")
+@PropertySource("classpath:db.properties")
 public class DBConfig {
     @Autowired
     Environment environment;
