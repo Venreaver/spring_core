@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +38,9 @@ public class DBLogger extends AbstractLogger {
 
         List<Event> allEvents = getAllEvents();
         String allEventIds = allEvents.stream()
-                .map(Event::getId)
-                .map(String::valueOf)
-                .collect(Collectors.joining(", "));
+                                      .map(Event::getId)
+                                      .map(String::valueOf)
+                                      .collect(Collectors.joining(", "));
         System.out.println("All DB Event ids: " + allEventIds);
     }
 
